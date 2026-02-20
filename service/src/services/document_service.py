@@ -27,12 +27,12 @@ class DocumentService:
         has_coursework = wf.check_coursework(wb, discipline_name)
         
         content = GeneralDictModel(
-            напрапвление=basic_info["напрапвление"],
+            направление=basic_info["направление"],
             профиль=basic_info["профиль"],
             список_дисциплин=basic_info["список дисциплин"],
             кафедры=basic_info["кафедры"],
             форма_обучения=specific_info["форма обучения"],
-            выбранная_дисциплина=discipline_name,
+            дисциплина=discipline_name,
             компетенции=competences,
             часы=volume_info["часы"],
             зачетные_единицы=volume_info["зачетные единицы"],
