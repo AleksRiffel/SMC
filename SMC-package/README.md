@@ -14,6 +14,7 @@ cd SMC-package && poetry install
 
 ## 🧩 Структура
 
+```bash
 smc_package/
 ├── methods/           # Функции для работы с Excel и генерации документов
 │   └── Workflow_functions.py

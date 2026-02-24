@@ -41,6 +41,7 @@ docker run -p 8000:8000 --name smc-container smc-service
 
 ### 📁 Структура сервиса
 
+```bash
 service/
 ├── src/
 │   ├── api/           # HTTP эндпоинты

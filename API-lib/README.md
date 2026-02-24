@@ -14,6 +14,7 @@ cd API-lib && poetry install
 
 ## 🧩 Структура
 
+```bash
 smc_api_lib/
 ├── api/               # Клиент для HTTP API
 │   └── client.py      # Основной класс SMCClient
