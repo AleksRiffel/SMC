@@ -1,3 +1,5 @@
-from .routes import document_routes
+"""API модуль с эндпоинтами"""
 
-__all__ = ['document_routes']
+from src.api.routes.document_routes import router
+
+__all__ = ["router"]

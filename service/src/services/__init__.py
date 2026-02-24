@@ -1,3 +1,5 @@
-from .document_service import DocumentService
+"""Сервисный слой приложения"""
 
-__all__ = ['DocumentService']
+from src.services.document_service import DocumentService
+
+__all__ = ["DocumentService"]

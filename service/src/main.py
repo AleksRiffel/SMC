@@ -1,10 +1,12 @@
+"""Главный файл FastAPI приложения"""
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
 
-from .core.config import settings
-from .api.routes import document_routes
+from src.core.config import settings
+from src.api.routes import router as documents_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -20,30 +22,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(document_routes.router)
+app.include_router(documents_router, prefix="/api/v1")
 
 os.makedirs(settings.GENERATED_DIR, exist_ok=True)
 os.makedirs(settings.UPLOADS_DIR, exist_ok=True)
 
-app.mount("/generated", StaticFiles(directory=settings.GENERATED_DIR), name="generated")
+if os.path.exists(settings.GENERATED_DIR):
+    app.mount("/generated", StaticFiles(directory=settings.GENERATED_DIR), name="generated")
 
 @app.get("/")
 async def root():
     return {
         "message": "SMC Service API",
         "version": settings.APP_VERSION,
-        "docs": "/docs"
+        "docs": "/docs",
+        "health": "/health"
     }
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy"}
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(
-        "main:app",
-        host=settings.HOST,
-        port=settings.PORT,
-        reload=settings.DEBUG
-    )
+    return {"status": "healthy", "version": settings.APP_VERSION}

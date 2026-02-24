@@ -2,7 +2,9 @@
 name = "smc-api-lib"
 version = "0.1.0"
 description = "Клиентская библиотека для работы с SMC сервисом"
-authors = ["Your Name <email@example.com>"]
+authors = ["AleksRifel <avr-tum@mail.ru.com>"]
+readme = "README.md"
+packages = [{include = "smc_api_lib", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

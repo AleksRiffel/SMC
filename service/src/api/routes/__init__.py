@@ -1,3 +1,5 @@
-from . import document_routes
+"""API роуты"""
 
-__all__ = ['document_routes']
+from src.api.routes.document_routes import router
+
+__all__ = ["router"]

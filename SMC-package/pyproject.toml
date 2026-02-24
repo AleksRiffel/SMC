@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "smc-package"
+version = "0.1.0"
+description = "Общий пакет с бизнес-логикой SMC"
+authors = ["bodypumk <matveyyaros0112@gmail.com>"]
+readme = "README.md"
+packages = [{include = "smc_package", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.5.0"
+docxtpl = "^0.16.7"
+openpyxl = "^3.1.2"
+python-docx = "^0.8.11"
+setuptools = "^75.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+black = "^23.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

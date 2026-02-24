@@ -2,20 +2,20 @@
 name = "smc-service"
 version = "1.0.0"
 description = "SMC Service для генерации документов"
-authors = ["Your Name <email@example.com>"]
+authors = ["AleksRifel <avr-tum@mail.ru.com>"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = "^0.104.0"
 uvicorn = {extras = ["standard"], version = "^0.24.0"}
-pydantic = "^2.5.0"
 pydantic-settings = "^2.1.0"
 python-multipart = "^0.0.6"
-openpyxl = "^3.1.2"
-python-docx = "^0.8.11"
-docxtpl = "^0.16.7"
 python-dotenv = "^1.0.0"
-setuptools = "^75.0.0"
+
+# Локальные пакеты
+smc-package = { path = "../SMC-package", develop = true }
+smc-api-lib = { path = "../API-lib", develop = true }
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"

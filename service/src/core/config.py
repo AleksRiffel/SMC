@@ -1,5 +1,7 @@
+"""Конфигурация приложения через Pydantic Settings"""
+
 from pydantic_settings import BaseSettings
-from typing import List
+from typing import List, Optional
 import os
 
 class Settings(BaseSettings):
@@ -15,10 +17,11 @@ class Settings(BaseSettings):
     GENERATED_DIR: str = os.path.join(BASE_DIR, "generated")
     TEMPLATES_DIR: str = os.path.join(BASE_DIR, "templates")
     
-    API_KEY: str | None = None
+    API_KEY: Optional[str] = None
     CORS_ORIGINS: List[str] = ["*"]
     
     class Config:
         env_file = ".env"
+        env_file_encoding = "utf-8"
 
 settings = Settings()

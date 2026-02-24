@@ -1,13 +1,5 @@
-from .config import settings
-from .GeneralDict import (
-    ХарактеристикиОбъемаДисциплины,
-    Компетенция,
-    GeneralDictModel
-)
+"""Core модуль с настройками и конфигурацией"""
 
-__all__ = [
-    'settings',
-    'ХарактеристикиОбъемаДисциплины',
-    'Компетенция',
-    'GeneralDictModel'
-]
+from src.core.config import settings
+
+__all__ = ["settings"]

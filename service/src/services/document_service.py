@@ -1,9 +1,12 @@
 import os
 import uuid
 from typing import List, Dict, Any
-from ..utils import Workflow_functions as wf
-from ..core.GeneralDict import GeneralDictModel
-from ..core.config import settings
+
+from smc_package.methods import Workflow_functions as wf
+from smc_package.schemas.GeneralDict import GeneralDictModel
+
+from src.core.config import settings
+
 
 class DocumentService:
     def __init__(self):
@@ -47,13 +50,19 @@ class DocumentService:
         content = GeneralDictModel(**content_data)
         
         file_id = str(uuid.uuid4())[:8]
-        output_rp = os.path.join(self.generated_dir, f"RP_{discipline_name}_{file_id}.docx")
-        output_a = os.path.join(self.generated_dir, f"A_{discipline_name}_{file_id}.docx")
-        output_fos = os.path.join(self.generated_dir, f"FOS_{discipline_name}_{file_id}.docx")
+        safe_name = discipline_name.replace(" ", "_").replace("/", "_")
+        
+        output_rp = os.path.join(self.generated_dir, f"RP_{safe_name}_{file_id}.docx")
+        output_a = os.path.join(self.generated_dir, f"A_{safe_name}_{file_id}.docx")
+        output_fos = os.path.join(self.generated_dir, f"FOS_{safe_name}_{file_id}.docx")
         
         template_rp = os.path.join(self.templates_dir, "шаблонРП.docx")
         template_a = os.path.join(self.templates_dir, "шаблонА.docx")
         template_fos = os.path.join(self.templates_dir, "шаблонФОС.docx")
+        
+        for template in [template_rp, template_a, template_fos]:
+            if not os.path.exists(template):
+                raise FileNotFoundError(f"Шаблон не найден: {template}")
         
         wf.generate_documents(
             content=content,

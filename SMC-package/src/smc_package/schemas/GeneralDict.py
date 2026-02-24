@@ -22,9 +22,8 @@ class СтруктураДисциплины(BaseModel):
     кодыИДК: str = ""
     оценочное: str = ""
 
-class Компетенция(BaseModel):
+class ИДК(BaseModel):
     описание: str = ""
-    код: str = ""
     знать: str = "знает"
     знает1: str = "не знает"
     знает3: str = "плохо знает"
@@ -41,6 +40,11 @@ class Компетенция(BaseModel):
     владеет4: str = "владеет"
     владеет5: str = "отлично владеет"
 
+class Компетенция(BaseModel):
+    описание: str = ""
+    код: str = ""
+    идк: List[ИДК] = []
+    
 class GeneralDictModel(BaseModel):
     дисциплина: str = ""
     направление: str = ""

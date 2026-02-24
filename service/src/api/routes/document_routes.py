@@ -1,27 +1,22 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File, Form, BackgroundTasks
+from fastapi import APIRouter, HTTPException, UploadFile, File
 from fastapi.responses import FileResponse
 import os
 import shutil
-from ...services.document_service import DocumentService
-from ...core.config import settings
-from pydantic import BaseModel
+import uuid
 
-router = APIRouter(prefix="/api/v1/documents", tags=["documents"])
-document_service = DocumentService()
+from src.core.config import settings
+from src.services.document_service import DocumentService
 
-class GenerateRequest(BaseModel):
-    excel_file_path: str
-    discipline_name: str
-
-class FilePathRequest(BaseModel):
-    excel_file_path: str
+# Создаем роутер
+router = APIRouter(prefix="/documents", tags=["documents"])
+service = DocumentService()
 
 @router.post("/upload")
 async def upload_excel(file: UploadFile = File(...)):
     if not file.filename.endswith(('.xlsx', '.xls')):
         raise HTTPException(status_code=400, detail="Only Excel files are allowed")
     
-    file_path = os.path.join(settings.UPLOADS_DIR, file.filename)
+    file_path = os.path.join(settings.UPLOADS_DIR, f"{uuid.uuid4()}_{file.filename}")
     
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -29,20 +24,17 @@ async def upload_excel(file: UploadFile = File(...)):
     return {"filename": file.filename, "file_path": file_path}
 
 @router.post("/disciplines")
-async def get_disciplines(request: FilePathRequest):
+async def get_disciplines(file_path: str):
     try:
-        disciplines = document_service.get_disciplines_from_excel(request.excel_file_path)
+        disciplines = service.get_disciplines_from_excel(file_path)
         return {"disciplines": disciplines}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/generate")
-async def generate_documents(request: GenerateRequest):
+async def generate_documents(file_path: str, discipline_name: str):
     try:
-        result = document_service.generate_documents(
-            excel_path=request.excel_file_path,
-            discipline_name=request.discipline_name
-        )
+        result = service.generate_documents(file_path, discipline_name)
         
         return {
             "success": True,
@@ -52,7 +44,11 @@ async def generate_documents(request: GenerateRequest):
                 "a": os.path.basename(result["a"]),
                 "fos": os.path.basename(result["fos"])
             },
-            "discipline_info": result["discipline_info"]
+            "download_urls": {
+                "rp": f"/api/v1/documents/download/{os.path.basename(result['rp'])}",
+                "a": f"/api/v1/documents/download/{os.path.basename(result['a'])}",
+                "fos": f"/api/v1/documents/download/{os.path.basename(result['fos'])}"
+            }
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
