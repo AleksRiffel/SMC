@@ -53,7 +53,7 @@ cd service && poetry install
 poetry run uvicorn src.main:app --reload
 ```
 
-### Локальный запуск
+### Запуск через Docker
 
 ```bash
 # Собрать образ
